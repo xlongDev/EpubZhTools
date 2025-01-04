@@ -1,168 +1,133 @@
-.page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
-  font-family: var(--font-geist-sans);
+.container {
+  background: var(--background-color);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  color: var(--text-color);
+  margin: 0 auto; /* 确保容器居中 */
+  box-sizing: border-box; /* 确保 padding 不影响宽度 */
 }
 
-@media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
+.container h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
 }
 
-.main {
+.uploadBox {
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: var(--upload-box-bg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.uploadBox:hover {
+  border-color: var(--primary-color);
+  background: var(--upload-box-hover-bg);
+}
+
+.uploadBox input[type="file"] {
+  display: none;
+}
+
+.uploadBox label {
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
-}
-
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
-  margin: 0;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
-}
-
-.main li:not(:last-of-type) {
-  margin-bottom: 8px;
-}
-
-.main code {
-  font-family: inherit;
-  background: var(--gray-alpha-100);
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-weight: 600;
-}
-
-.ctas {
-  display: flex;
-  gap: 16px;
-}
-
-.ctas a {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  border: none;
-  border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
-  cursor: pointer;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
+  gap: 0.5rem;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.uploadBox label svg {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1.5rem;
+}
+
+.button:hover {
+  background: var(--primary-hover-color);
+}
+
+.button:disabled {
+  background: var(--disabled-color);
+  cursor: not-allowed;
+}
+
+.status {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.error {
+  margin-top: 1rem;
+  color: var(--error-color);
+  font-size: 0.9rem;
+}
+
+.downloadLink {
+  display: none;
+  margin-top: 1.5rem;
+  color: var(--primary-color);
+  text-decoration: none;
   font-weight: 500;
 }
 
-a.primary {
-  background: var(--foreground);
-  color: var(--background);
-  gap: 8px;
+.downloadLink:hover {
+  text-decoration: underline;
 }
 
-a.secondary {
-  border-color: var(--gray-alpha-200);
-  min-width: 180px;
-}
-
-.footer {
-  grid-row-start: 3;
-  display: flex;
-  gap: 24px;
-}
-
-.footer a {
+.loading {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
 }
 
-.footer img {
-  flex-shrink: 0;
+.githubLink {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  text-decoration: none;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
+.darkModeToggle {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
-  }
-
-  .main {
-    align-items: center;
-  }
-
-  .main ol {
-    text-align: center;
-  }
-
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+  .container {
+    padding: 1rem; /* 在小屏幕上减少内边距 */
   }
 }

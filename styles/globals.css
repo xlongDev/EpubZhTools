@@ -1,42 +1,41 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background-color: white;
+  --text-color: #333;
+  --primary-color: #007bff;
+  --primary-hover-color: #0056b3;
+  --border-color: #ccc;
+  --upload-box-bg: #f9f9f9;
+  --upload-box-hover-bg: #e9f5ff;
+  --disabled-color: #ccc;
+  --error-color: #ff4d4f;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark-mode {
+  --background-color: #1e1e1e;
+  --text-color: #f5f5f5;
+  --primary-color: #007bff;
+  --primary-hover-color: #0056b3;
+  --border-color: #444;
+  --upload-box-bg: #2d2d2d;
+  --upload-box-hover-bg: #3d3d3d;
+  --disabled-color: #666;
+  --error-color: #ff4d4f;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
+html, body {
+  height: 100%;
   margin: 0;
+  padding: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, var(--background-color), #c3cfe2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* 确保最小高度为视口高度 */
+  padding: 1rem; /* 防止内容贴边 */
+  box-sizing: border-box; /* 确保 padding 不影响布局 */
+  color: var(--text-color);
 }
