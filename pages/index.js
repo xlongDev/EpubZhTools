@@ -88,7 +88,7 @@ export default function Home() {
         try {
           const errorData = JSON.parse(responseText);
           throw new Error(errorData.message || "转换失败");
-        } catch (jsonError) {
+        } catch {
           // 如果响应不是 JSON，直接抛出原始响应文本
           throw new Error(responseText || "转换失败");
         }
