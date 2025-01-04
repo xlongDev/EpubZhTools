@@ -2,7 +2,7 @@ import multer from 'multer';
 import { Converter } from 'opencc-js';
 import AdmZip from 'adm-zip';
 import iconv from 'iconv-lite';
-import path from 'path'; // 导入 path 模块
+import path from 'path';
 
 // 使用内存存储
 const storage = multer.memoryStorage();

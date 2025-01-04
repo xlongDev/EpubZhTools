@@ -61,43 +61,53 @@ export default function Home() {
     e.preventDefault();
     const fileInput = e.target.epubFile;
     const file = fileInput.files[0];
-
+  
     if (!file) {
       setError("请选择一个EPUB文件");
       return;
     }
-
+  
     setStatus(`已选择文件：${file.name}，正在转换，请稍候...`);
     setIsLoading(true);
     setError("");
-
+  
     const formData = new FormData();
     formData.append("epub", file);
-
+  
     try {
       const response = await fetch("/api/convert", {
         method: "POST",
         body: formData,
       });
-
+  
+      // 先以文本形式读取响应，确保能够捕获非 JSON 响应
+      const responseText = await response.text();
+  
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "转换失败");
+        // 尝试解析 JSON 错误信息
+        try {
+          const errorData = JSON.parse(responseText);
+          throw new Error(errorData.message || "转换失败");
+        } catch (jsonError) {
+          // 如果响应不是 JSON，直接抛出原始响应文本
+          throw new Error(responseText || "转换失败");
+        }
       }
-
-      const result = await response.json();
-
+  
+      // 解析 JSON 响应
+      const result = JSON.parse(responseText);
+  
       if (!result.downloadUrl) {
         throw new Error("未找到下载链接");
       }
-
+  
       setStatus("转换完成！");
       setIsLoading(false);
-
+  
       const fullDownloadUrl = result.downloadUrl.startsWith("http")
         ? result.downloadUrl
         : `${window.location.origin}${result.downloadUrl}`;
-
+  
       setDownloadUrl(fullDownloadUrl);
       window.location.href = fullDownloadUrl; // 自动触发下载
     } catch (error) {
