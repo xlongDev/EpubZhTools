@@ -3,6 +3,7 @@ import { Converter } from 'opencc-js';
 import AdmZip from 'adm-zip';
 import iconv from 'iconv-lite';
 import path from 'path';
+import { Readable } from 'stream';
 
 // 使用内存存储
 const storage = multer.memoryStorage();
@@ -36,6 +37,36 @@ export default function handler(req, res) {
     const filename = convertFilename(originalFilename);
 
     try {
+      // 将文件内容转换为流
+      const fileStream = new Readable();
+      fileStream.push(fileBuffer);
+      fileStream.push(null);
+
+      // 处理文件（解压、转换、重新打包）
+      const outputBuffer = await processFile(fileStream);
+
+      // 将转换后的文件内容存储到内存中
+      global.fileCache[filename] = outputBuffer;
+
+      // 返回下载链接
+      res.status(200).json({
+        downloadUrl: `/api/download?filename=${encodeURIComponent(filename)}`,
+      });
+    } catch (error) {
+      console.error('转换失败：', error);
+      res.status(500).json({ error: '转换失败' });
+    }
+  });
+}
+
+// 处理文件（解压、转换、重新打包）
+async function processFile(fileStream) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    fileStream.on('data', (chunk) => chunks.push(chunk));
+    fileStream.on('end', () => {
+      const fileBuffer = Buffer.concat(chunks);
+
       // 解压文件
       const zip = new AdmZip(fileBuffer);
       const zipEntries = zip.getEntries();
@@ -55,18 +86,9 @@ export default function handler(req, res) {
 
       // 重新打包文件
       const outputBuffer = zip.toBuffer();
-
-      // 将转换后的文件内容存储到内存中
-      global.fileCache[filename] = outputBuffer;
-
-      // 返回下载链接
-      res.status(200).json({
-        downloadUrl: `/api/download?filename=${encodeURIComponent(filename)}`,
-      });
-    } catch (error) {
-      console.error('转换失败：', error);
-      res.status(500).json({ error: '转换失败' });
-    }
+      resolve(outputBuffer);
+    });
+    fileStream.on('error', (error) => reject(error));
   });
 }
 
